@@ -37,9 +37,8 @@ func twoSum(nums []int, target int) []int {
 		num := nums[i]
 		if i2, ok := m[target-num]; ok {
 			return []int{i, i2}
-		} else {
-			m[num] = i
 		}
+		m[num] = i
 	}
 	return nil
 }
