@@ -5,29 +5,59 @@ import "fmt"
 func main() {
 	fmt.Println(lengthOfLongestSubstring("pwwkew"), 3)
 	fmt.Println(lengthOfLongestSubstring("dvdf"), 3)
+	fmt.Println(lengthOfLongestSubstring("abba"), 2)
+	fmt.Println(lengthOfLongestSubstring("tmmzuxt"), 5)
 }
 
 func lengthOfLongestSubstring(s string) int {
+	aa := make(map[byte]int)
+	start := 0
+	m := 0
+	l := 0
+	size := len(s)
+	for i := 0; i < size; i++ {
+		if value, ok := aa[s[i]]; ok {
+			if value >= start {
+				start = value + 1
+				l = i - start + 1
+			} else {
+				l++
+			}
+		} else {
+			l++
+		}
+		aa[s[i]] = i
+		if l > m {
+			m = l
+		}
+	}
+	return m
+}
+
+func lengthOfLongestSubstring1(s string) int {
 	var l = len(s)
 	if l <= 1 {
 		return l
 	}
-	var h, t, max int
-	var m = make(map[byte]int, l)
+	var max int
+	var rb = make(map[byte]struct{}, l)
 	for i := 0; i < l; i++ {
-		if res, ok := m[s[i]]; ok {
-			if r := t - h; r > max {
-				max = r
-			}
-			h = res + 1
-			t = res + 1
-		} else {
-			t++
+		rb = map[byte]struct{}{}
+		rb[s[i]] = struct{}{}
+		j := i + 1
+		if i == 2 {
+			println()
 		}
-		m[s[i]] = i
-	}
-	if r := t - h; r > max {
-		max = r
+		for ; j < l; j++ {
+			if _, ok := rb[s[j]]; ok {
+				break
+			}
+			rb[s[j]] = struct{}{}
+		}
+
+		if _max := j - i; max < _max {
+			max = _max
+		}
 	}
 	return max
 }
