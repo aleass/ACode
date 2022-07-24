@@ -3,10 +3,10 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println(lengthOfLongestSubstring("pwwkew"), 3)
-	fmt.Println(lengthOfLongestSubstring("dvdf"), 3)
-	fmt.Println(lengthOfLongestSubstring("abba"), 2)
-	fmt.Println(lengthOfLongestSubstring("tmmzuxt"), 5)
+	fmt.Println(lengthOfLongestSubstring("aca"), 3)
+	//fmt.Println(lengthOfLongestSubstring("dvdf"), 3)
+	//fmt.Println(lengthOfLongestSubstring("abba"), 2)
+	//fmt.Println(lengthOfLongestSubstring("tmmzuxt"), 5)
 }
 
 func lengthOfLongestSubstring(s string) int {
@@ -16,15 +16,12 @@ func lengthOfLongestSubstring(s string) int {
 	l := 0
 	size := len(s)
 	for i := 0; i < size; i++ {
+		l++
 		if value, ok := aa[s[i]]; ok {
 			if value >= start {
 				start = value + 1
-				l = i - start + 1
-			} else {
-				l++
+				l = i - value
 			}
-		} else {
-			l++
 		}
 		aa[s[i]] = i
 		if l > m {
