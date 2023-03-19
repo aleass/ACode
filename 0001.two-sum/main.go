@@ -23,8 +23,27 @@ func main() {
 	res = twoSum2(params, taget)
 	fmt.Println(params[res[0]], params[res[1]], taget, res)
 }
-
 func twoSum2(nums []int, target int) []int {
+	sorted := make([][2]int, len(nums))
+	sort.Slice(nums, func(i, j int) bool {
+		return sorted[i][0] < sorted[j][0]
+	})
+	i, j := 0, len(sorted)-1
+	for i < j {
+		sum := sorted[i][0] + sorted[j][0]
+		if sum < target {
+			i++
+		} else if sum > target {
+			j--
+		} else {
+			return []int{sorted[i][1], sorted[j][1]}
+		}
+	}
+
+	return nil
+}
+
+func twoSum3(nums []int, target int) []int {
 	sorted := make([]int, len(nums))
 	copy(sorted, nums)
 	sort.Ints(sorted)
