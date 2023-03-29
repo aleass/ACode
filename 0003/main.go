@@ -15,11 +15,18 @@ func main() {
 
 /*
 abcdacef
+01234567
 发现第一个重复a
-abcda -> index:0 i:5
 
+	index:0 i:4
 	s = s[index+1:] 等于 a｜bcdacef
-	i -= index  等于 5 - 0 = 5 字符串发生裁剪，需要把i移到对应的新位置
+	i -= index  等于 4 - 0 = 4 字符串发生裁剪，需要把i移到对应的新位置，并且下一轮继续从该位置检查{
+		abcdacef
+		01234567
+		变成
+		bcdacef
+		0123456
+	}
 */
 func lengthOfLongestSubstring(s string) int {
 	if l := len(s); l < 2 { //直接返回
@@ -78,7 +85,6 @@ func lengthOfLongestSubstring1(s string) int {
 					res = len(sB[:i])
 				}
 				sB = sB[index+1:]
-				//println(string(sB))
 				goto start
 			}
 		}
