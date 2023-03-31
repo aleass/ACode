@@ -1,3 +1,4 @@
 .idea
-main.go
-/temp/*
+/temp/
+/main.go
+/main.o
