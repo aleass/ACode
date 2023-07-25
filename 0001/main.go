@@ -24,19 +24,26 @@ func main() {
 	fmt.Println(params[res[0]], params[res[1]], taget, res)
 }
 func twoSum2(nums []int, target int) []int {
-	sorted := make([][2]int, len(nums))
+	sorted := make([]int, len(nums))
+	index := make([]int, len(nums))
+	copy(sorted, nums)
 	sort.Slice(nums, func(i, j int) bool {
-		return sorted[i][0] < sorted[j][0]
+		if sorted[i] < sorted[j] {
+			index[j] = i
+			index[i] = j
+			return true
+		}
+		return false
 	})
 	i, j := 0, len(sorted)-1
 	for i < j {
-		sum := sorted[i][0] + sorted[j][0]
+		sum := sorted[i] + sorted[j]
 		if sum < target {
 			i++
 		} else if sum > target {
 			j--
 		} else {
-			return []int{sorted[i][1], sorted[j][1]}
+			return []int{index[i], index[j]}
 		}
 	}
 
@@ -66,9 +73,6 @@ func twoSum3(nums []int, target int) []int {
 			flag = true
 		} else if num == sorted[j] {
 			indices[1] = k
-		}
-		if i == -1 && j == -1 {
-			break
 		}
 	}
 	return indices

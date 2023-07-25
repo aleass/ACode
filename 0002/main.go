@@ -7,6 +7,26 @@ type ListNode struct {
 
 func main() {
 	var res, l1, l2 *ListNode
+	l1 = &ListNode{5, nil}
+	l2 = &ListNode{5, nil}
+	res = addTwoNumbers2(l1, l2)
+	println("1")
+	for res.Next != nil {
+		print(res.Val)
+		res = res.Next
+	}
+	println(res.Val)
+	l1 = &ListNode{2, &ListNode{4, &ListNode{3, nil}}}
+	l2 = &ListNode{5, &ListNode{6, &ListNode{4, nil}}}
+	res = addTwoNumbers2(l1, l2)
+	println("708")
+	for res.Next != nil {
+		print(res.Val)
+		res = res.Next
+	}
+	println(res.Val)
+	return
+
 	//1,8
 	l1 = &ListNode{1, &ListNode{8, nil}}
 	//0
@@ -102,13 +122,14 @@ func main() {
 	println(res.Val)
 }
 
-// 4 ms	4.2 MB 结合
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	//创建头
 	var res = new(ListNode)
+	//复制信息
 	temp := res
 	var reTemp *ListNode //复用
 	v1, v2 := l1.Val, l2.Val
-	var c1, c2 int
+	//
 	var power, v3 int
 	for l1.Next != nil || l2.Next != nil {
 		v3 = v1 + v2 + power
@@ -130,13 +151,11 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 			}
 		}
 		if l1.Next != nil {
-			c1++
 			reTemp = l1
 			l1 = l1.Next
 			v1 = l1.Val
 		}
 		if l2.Next != nil {
-			c2++
 			reTemp = l2
 			l2 = l2.Next
 			v2 = l2.Val
@@ -156,6 +175,172 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 			l1.Next = nil
 			temp.Next = l1
 		}
+	}
+	return res
+}
+
+func addTwoNumbers3(l1, l2 *ListNode) *ListNode {
+	var _res = new(ListNode)
+	var res = _res
+	var power int
+	val := l1.Val + l2.Val + power
+	for l1.Next != nil && l2.Next != nil {
+		power = 0
+		for val > 9 {
+			val -= 10
+			power++
+		}
+		_res.Val = val
+		_res.Next = new(ListNode)
+		_res = _res.Next
+		l1 = l1.Next
+		l2 = l2.Next
+		val = l1.Val + l2.Val + power
+	}
+
+	if l1.Next == nil {
+		for l2.Next != nil {
+			power = 0
+			if val > 9 {
+				for val > 9 {
+					val -= 10
+					power++
+				}
+			} else {
+				_res.Val = val
+				_res.Next = l2.Next
+				return res
+			}
+			_res.Val = val
+			_res.Next = new(ListNode)
+			_res = _res.Next
+			l2 = l2.Next
+			val = l2.Val + power
+		}
+		power = 0
+		if val > 9 {
+			for val > 9 {
+				val -= 10
+				power++
+			}
+		}
+		_res.Val = val
+		if power > 0 {
+			_res.Next = new(ListNode)
+			_res = _res.Next
+			_res.Val = power
+		}
+		return res
+	}
+
+	if l2.Next == nil {
+		for l1.Next != nil {
+			power = 0
+			if val > 9 {
+				for val > 9 {
+					val -= 10
+					power++
+				}
+			} else {
+				_res.Val = val
+				_res.Next = l1.Next
+				return res
+			}
+			_res.Val = val
+			_res.Next = new(ListNode)
+			_res = _res.Next
+			l1 = l1.Next
+			val = l1.Val + power
+		}
+		power = 0
+		if val > 9 {
+			for val > 9 {
+				val -= 10
+				power++
+			}
+		}
+		_res.Val = val
+		if power > 0 {
+			_res.Next = new(ListNode)
+			_res = _res.Next
+			_res.Val = power
+		}
+	}
+
+	return res
+}
+
+func addTwoNumbers2(l1, l2 *ListNode) *ListNode {
+	var _res = new(ListNode)
+	var res = _res
+	var power int
+	val := l1.Val + l2.Val + power
+	for l1.Next != nil && l2.Next != nil {
+		power = 0
+		for val > 9 {
+			val -= 10
+			power++
+		}
+		_res.Val = val
+		_res.Next = new(ListNode)
+		_res = _res.Next
+		l1 = l1.Next
+		l2 = l2.Next
+		val = l1.Val + l2.Val + power
+	}
+
+	if l2.Next == nil && l1.Next == nil {
+		power = 0
+		if val > 9 {
+			for val > 9 {
+				val -= 10
+				power++
+			}
+			_res.Val = val
+			_res.Next = &ListNode{}
+		}
+		if power > 0 {
+			_res.Val = power
+			_res.Next = new(ListNode)
+		}
+		return res
+	}
+
+	var notEmpty = l2
+	if l2.Next == nil {
+		notEmpty = l1
+	}
+
+	for notEmpty.Next != nil {
+		power = 0
+		if val > 9 {
+			for val > 9 {
+				val -= 10
+				power++
+			}
+		} else {
+			_res.Val = val
+			_res.Next = notEmpty.Next
+			return res
+		}
+		_res.Val = val
+		_res.Next = new(ListNode)
+		_res = _res.Next
+		notEmpty = notEmpty.Next
+		val = notEmpty.Val + power
+	}
+	power = 0
+	if val > 9 {
+		for val > 9 {
+			val -= 10
+			power++
+		}
+	}
+	_res.Val = val
+	if power > 0 {
+		_res.Next = new(ListNode)
+		_res = _res.Next
+		_res.Val = power
 	}
 	return res
 }
